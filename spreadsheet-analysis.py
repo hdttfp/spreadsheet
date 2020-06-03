@@ -29,14 +29,25 @@ print("The total sales for 2018 is £" + str(total_sales) + ".")
 print("The total expenditure for 2018 is £" + str(total_expenditure) + ".")
 print("The profit for 2018 is £" + str(total_profit) + ".")
 
+max_sales = max(list_sales)
+min_sales = min(list_sales)
+for month in range(0, 11):
+    if list_sales[month] == max_sales:
+        max_sales_month = month
+    if list_sales[month] == min_sales:
+        min_sales_month = month
+print("{} had the greatest sales of £{}.".format(list_months[max_sales_month], max_sales))
+print("{} had the lowest sales of £{}.".format(list_months[min_sales_month], min_sales))
+
+
 list_month_change = [0]
 for month in range(0, 11):
     monthly_change = int(((list_profit[month + 1] - list_profit[month]) / list_profit[month]) * 100)
     list_month_change.append(monthly_change)
-greatest_change = max(list_month_change)
+max_change = max(list_month_change)
 
 for month in range(0, 11):
-    if list_month_change[month] == greatest_change:
-        greatest_month = month
+    if list_month_change[month] == max_change:
+        max_change_month = month
 
-print("The greatest monthly change was {}% from {} to {}.".format(greatest_change, list_months[greatest_month - 1], list_months[greatest_month]))
+print("The greatest monthly change was {}% from {} to {}.".format(max_change, list_months[max_change_month - 1], list_months[max_change_month]))
