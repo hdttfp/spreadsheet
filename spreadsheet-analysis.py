@@ -25,20 +25,49 @@ with open('sales.csv', 'r') as csv_file:
 total_sales = sum(list_sales)
 total_expenditure = sum(list_expenditure)
 total_profit = total_sales - total_expenditure
-print("The total sales for 2018 is £" + str(total_sales) + ".")
-print("The total expenditure for 2018 is £" + str(total_expenditure) + ".")
-print("The profit for 2018 is £" + str(total_profit) + ".")
+#print("The total sales for 2018 is £" + str(total_sales) + ".")
+#print("The total expenditure for 2018 is £" + str(total_expenditure) + ".")
+#print("The profit for 2018 is £" + str(total_profit) + ".")
+
+average_sales = total_sales / len(list_months)
+average_expenditure = total_expenditure / len(list_months)
+average_profit = total_profit / len(list_months)
 
 max_sales = max(list_sales)
 min_sales = min(list_sales)
+max_expenditure = max(list_expenditure)
+min_expenditure = min(list_expenditure)
+max_profit = max(list_profit)
+min_profit = min(list_profit)
 for month in range(0, 11):
     if list_sales[month] == max_sales:
         max_sales_month = month
     if list_sales[month] == min_sales:
         min_sales_month = month
-print("{} had the greatest sales of £{}.".format(list_months[max_sales_month], max_sales))
-print("{} had the lowest sales of £{}.".format(list_months[min_sales_month], min_sales))
+    if list_expenditure[month] == max_expenditure:
+        max_expenditure_month = month
+    if list_expenditure[month] == min_expenditure:
+        min_expenditure_month = month
+    if list_profit[month] == max_profit:
+        max_profit_month = month
+    if list_profit[month] == min_profit:
+        min_profit_month = month
+#print("{} had the greatest sales of £{}.".format(list_months[max_sales_month], max_sales))
+#print("{} had the lowest sales of £{}.".format(list_months[min_sales_month], min_sales))
 
+with open('summary.csv', 'w+') as csv_file:
+    field_names = ['data', 'total', 'average', 'maximum', 'max month', 'minimum', 'min month']
+    summary = csv.DictWriter(csv_file, fieldnames=field_names)
+    summary.writeheader()
+    summary.writerow({'data': 'sales', 'total': total_sales, 'average': average_sales,
+                      'maximum': max_sales, 'max month': list_months[max_sales_month],
+                      'minimum': min_sales, 'min month': list_months[min_sales_month]})
+    summary.writerow({'data': 'expenditure', 'total': total_expenditure, 'average': average_expenditure,
+                      'maximum': max_expenditure, 'max month': list_months[max_expenditure_month],
+                      'minimum': min_expenditure, 'min month': list_months[min_expenditure_month]})
+    summary.writerow({'data': 'profit', 'total': total_profit, 'average': average_profit,
+                      'maximum': max_profit, 'max month': list_months[max_profit_month],
+                      'minimum': min_profit, 'min month': list_months[min_profit_month]})
 
 list_month_change = [0]
 for month in range(0, 11):
@@ -51,3 +80,31 @@ for month in range(0, 11):
         max_change_month = month
 
 print("The greatest monthly change was {}% from {} to {}.".format(max_change, list_months[max_change_month - 1], list_months[max_change_month]))
+
+import matplotlib.pyplot as plt
+
+x=[]
+y=[]
+
+with open('sales.csv', 'r') as csv_file:
+    spreadsheet = csv.DictReader(csv_file)
+    all_sales = []
+    all_expenditure = []
+
+    for row in spreadsheet:
+        all_sales.append(int(row['sales']))
+        all_expenditure.append(int(row['expenditure']))
+        #print(all_sales)
+        x.append(int(row[0]))
+        y.append(int(row[1]))
+
+plt.plot(x,y, marker='o')
+plt.title('Data from the CSV File: Sales')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+x,y = np.loadtxt('sales.csv',unpack =True)
+plt.plot(x,y)
+plt.title('Sales')
+plt.ylabel('Month')
+plt.xtable('£')
+plt.show()
