@@ -1,4 +1,5 @@
 import csv
+import matplotlib.pyplot as plt
 
 with open('sales.csv', 'r') as csv_file:
     spreadsheet = csv.DictReader(csv_file)
@@ -25,9 +26,9 @@ with open('sales.csv', 'r') as csv_file:
 total_sales = sum(list_sales)
 total_expenditure = sum(list_expenditure)
 total_profit = total_sales - total_expenditure
-#print("The total sales for 2018 is £" + str(total_sales) + ".")
-#print("The total expenditure for 2018 is £" + str(total_expenditure) + ".")
-#print("The profit for 2018 is £" + str(total_profit) + ".")
+print("The total sales for 2018 is £" + str(total_sales) + ".")
+print("The total expenditure for 2018 is £" + str(total_expenditure) + ".")
+print("The profit for 2018 is £" + str(total_profit) + ".")
 
 average_sales = total_sales / len(list_months)
 average_expenditure = total_expenditure / len(list_months)
@@ -52,8 +53,6 @@ for month in range(0, 11):
         max_profit_month = month
     if list_profit[month] == min_profit:
         min_profit_month = month
-#print("{} had the greatest sales of £{}.".format(list_months[max_sales_month], max_sales))
-#print("{} had the lowest sales of £{}.".format(list_months[min_sales_month], min_sales))
 
 with open('summary.csv', 'w+') as csv_file:
     field_names = ['data', 'total', 'average', 'maximum', 'max month', 'minimum', 'min month']
@@ -81,30 +80,8 @@ for month in range(0, 11):
 
 print("The greatest monthly change was {}% from {} to {}.".format(max_change, list_months[max_change_month - 1], list_months[max_change_month]))
 
-import matplotlib.pyplot as plt
-
-x=[]
-y=[]
-
-with open('sales.csv', 'r') as csv_file:
-    spreadsheet = csv.DictReader(csv_file)
-    all_sales = []
-    all_expenditure = []
-
-    for row in spreadsheet:
-        all_sales.append(int(row['sales']))
-        all_expenditure.append(int(row['expenditure']))
-        #print(all_sales)
-        x.append(int(row[0]))
-        y.append(int(row[1]))
-
-plt.plot(x,y, marker='o')
+plt.plot(list_months, list_sales)
 plt.title('Data from the CSV File: Sales')
 plt.xlabel('Month')
 plt.ylabel('Sales')
-x,y = np.loadtxt('sales.csv',unpack =True)
-plt.plot(x,y)
-plt.title('Sales')
-plt.ylabel('Month')
-plt.xtable('£')
 plt.show()
